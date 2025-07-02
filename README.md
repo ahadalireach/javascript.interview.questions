@@ -140,42 +140,6 @@ JavaScript is popular for a reason. It’s powerful, flexible, and beginner-frie
 
 ---
 
-## ❓ What Happens When We Load a JavaScript Page?
-
-When you open a website, the browser goes through a step-by-step process to load and run JavaScript.
-
-### Step-by-Step Breakdown:
-
-1. **Browser Sends Request:**
-
-   - You enter a URL.
-   - The browser sends an HTTP request to the server.
-
-2. **Server Responds:**
-
-   - The server sends back HTML, CSS, and JavaScript files.
-
-3. **HTML Is Parsed:**
-
-   - Browser reads HTML from top to bottom.
-   - When it finds a `<script>` tag, it pauses HTML parsing to fetch and run the JavaScript (unless it's `async` or `defer`).
-
-4. **JavaScript Executes:**
-
-   - JS code runs in the **Global Execution Context**.
-   - Variables and functions are stored in memory.
-
-5. **DOM Is Built:**
-
-   - As HTML is parsed, the browser builds the **DOM (Document Object Model)**.
-   - JS can now interact with the DOM (e.g., manipulate elements).
-
-6. **Page Fully Loads:**
-   - All scripts, styles, images, and other resources are loaded.
-   - Any code inside `window.onload` or `DOMContentLoaded` now runs.
-
----
-
 ## ❓ What Are JavaScript's Weaknesses?
 
 Even though JavaScript is powerful and popular, it has some limitations.
@@ -1413,13 +1377,13 @@ obj2.print(); // Logs the global 'window' object (or 'undefined' in strict mode)
 function Person(name) {
   this.name = name;
 }
-const person1 = new Person("John"); // Works
+const person1 = new Person("Abdul Ahad"); // Works
 
 // Arrow Function as Constructor
 const Person = (name) => {
   this.name = name;
 };
-const person2 = new Person("John"); // Error: Person is not a constructor
+const person2 = new Person("Abdul Ahad"); // Error: Person is not a constructor
 ```
 
 6. Hoisting
@@ -1938,8 +1902,8 @@ function Person(name) {
   this.name = name;
 }
 
-const p = new Person("John");
-console.log(p.name); // "John"
+const p = new Person("Abdul Ahad");
+console.log(p.name); // "Abdul Ahad"
 ```
 
 ### 4. Named Function Expression (NFE)
@@ -2502,7 +2466,7 @@ A **deep copy** creates a **fully independent copy** of the object, including **
 
 ```js
 let person = {
-  name: "John",
+  name: "Abdul Ahad",
   address: { city: "Delhi" },
 };
 
@@ -2517,7 +2481,7 @@ let deepCopy = JSON.parse(JSON.stringify(person));
 
 ```js
 let person = {
-  name: "John",
+  name: "Abdul Ahad",
   address: { city: "Delhi" },
 };
 
@@ -2546,6 +2510,310 @@ console.log(deepCopy.details.age); // 30
 | Copy method example     | `const copy = { ...obj }`     | `JSON.parse(JSON.stringify(obj))` or `structuredClone()` |
 | Supports functions?     | ✅ Yes                        | ❌ No (if using JSON methods)                            |
 | Supports circular refs? | ✅ Yes (manual or modern API) | ✅ Yes (`structuredClone()`) only                        |
+
+---
+
+## ❕ Bonus Questions
+
+### Delete keyword in functions
+
+```js
+const func = (function (a) {
+  delete a;
+  return a;
+})(5);
+console.log(func); // 5
+```
+
+✅ **Explanation**: `delete` only removes properties from **objects**. `a` is a local function argument (not an object property), so `delete a` does nothing.
+
+### Delete property from object
+
+```js
+const user = {
+  name: "Ahad Ali",
+  age: 24,
+  "like this video": true,
+};
+delete user["like this video"];
+console.log(user);
+```
+
+✅ **Output**:
+
+```js
+{ name: 'Ahad Ali', age: 24 }
+```
+
+✅ **Explanation**: `delete` works on object properties. This successfully removes the dynamic key.
+
+### Dynamic object keys
+
+```js
+const property = "firstName";
+const name = "Ahad Ali";
+const user = {
+  [property]: name,
+};
+console.log(user.firstName); // "Ahad Ali"
+```
+
+✅ **Explanation**: Computed property names using square brackets allow dynamic key assignment.
+
+### Looping over object keys
+
+```js
+const user = {
+  name: "Ahad Ali",
+  age: 24,
+  isTotallyAwesome: true,
+};
+for (key in user) {
+  console.log(user[key]);
+}
+```
+
+✅ **Output**:
+
+```js
+Ahad Ali
+24
+true
+```
+
+✅ **Explanation**: `for...in` loops through enumerable properties.
+
+### Duplicate keys in object
+
+```js
+const obj = {
+  a: "one",
+  b: "two",
+  a: "three",
+};
+console.log(obj);
+```
+
+✅ **Output**:
+
+```js
+{ a: 'three', b: 'two' }
+```
+
+✅ **Explanation**: Last key declaration wins. Earlier one is overwritten.
+
+### How to Multiply object values by 2?
+
+```js
+let nums = {
+  a: 100,
+  b: 200,
+  title: "My nums",
+};
+function multiplyByTwo(obj) {
+  for (key in obj) {
+    if (typeof obj[key] === "number") {
+      obj[key] *= 2;
+    }
+  }
+}
+multiplyByTwo(nums);
+console.log(nums);
+```
+
+✅ **Output**:
+
+```js
+{ a: 200, b: 400, title: 'My nums' }
+```
+
+✅ **Explanation**: Only numeric properties are modified.
+
+### Object keys as objects
+
+```js
+const a = {};
+const b = { key: "b" };
+const c = { key: "c" };
+a[b] = 123;
+a[c] = 456;
+console.log(a[b]);
+```
+
+✅ **Output**:
+
+```js
+456;
+```
+
+✅ **Explanation**: Object keys are converted to strings. Both `b` and `c` become `"[object Object]"`, so the second assignment overrides the first.
+
+### JSON.stringify with selected keys
+
+```js
+const settings = {
+  username: "Ahad",
+  level: 19,
+  health: 90,
+};
+const data = JSON.stringify(settings, ["level", "health"]);
+console.log(data);
+```
+
+✅ **Output**:
+
+```js
+{"level":19,"health":90}
+```
+
+✅ **Explanation**: Second argument is a replacer array - it picks only specified keys.
+
+### Arrow function vs regular method in object
+
+```js
+const shape = {
+  radius: 10,
+  diameter() {
+    return this.radius * 2;
+  },
+  perimeter: () => 2 * Math.PI * this.radius,
+};
+console.log(shape.diameter());
+console.log(shape.perimeter());
+```
+
+✅ **Output**:
+
+```js
+20;
+NaN;
+```
+
+✅ **Explanation**:
+
+- `diameter()` is a regular method — `this` refers to `shape`
+- `perimeter` is an arrow function — `this` does **not** refer to `shape`, but to outer scope
+
+### Destructuring nested object properties
+
+```js
+const user = {
+  name: "Ahad Ali",
+  age: 24,
+  fullName: {
+    first: "Ahad",
+    last: "Ali",
+  },
+};
+
+const {
+  fullName: { first },
+} = user;
+console.log(first); // "Ahad"
+```
+
+✅ **Explanation**: We're using **nested destructuring** to extract the `first` key from `fullName`. The variable `first` is available directly.
+
+### Object references and mutation
+
+```js
+let c = { greeting: "Hey!" };
+let d;
+d = c;
+c.greeting = "Hello";
+console.log(d.greeting); // "Hello"
+```
+
+✅ **Explanation**: `c` and `d` reference the same object in memory. Updating one reflects in the other.
+
+### Object comparison
+
+```js
+console.log({ a: 1 } == { a: 1 }); // false
+console.log({ a: 1 } === { a: 1 }); // false
+```
+
+✅ **Explanation**: Objects are only equal by **reference**, not by structure or value. These are two different object instances.
+
+### Reference kept in array after setting object to null
+
+```js
+let person = { name: "Abdul Ahad" };
+const members = [person];
+person = null;
+console.log(members);
+```
+
+✅ **Output**:
+
+```js
+[{ name: "Abdul Ahad" }];
+```
+
+✅ **Explanation**: The array still holds a reference to the original object, even after `person = null`.
+
+### Object property set to null (not the object itself)
+
+```js
+let person = { name: "Abdul Ahad" };
+const members = [person];
+person.name = null;
+console.log(members);
+```
+
+✅ **Output**:
+
+```js
+[{ name: null }];
+```
+
+✅ **Explanation**: Since both `person` and `members[0]` refer to the same object, changes in one reflect in the other.
+
+### Spread and default parameter reference behavior
+
+```js
+const value = { number: 10 };
+const multiply = (x = { ...value }) => {
+  console.log((x.number *= 2));
+};
+
+multiply(); // 20
+multiply(); // 20
+multiply(value); // 20
+multiply(value); // 40
+```
+
+✅ **Explanation**:
+
+- `{ ...value }` creates a **new copy** each time, so default calls don’t affect each other.
+- When `value` is passed directly, mutation affects the same object.
+
+### Object mutation vs reassignment
+
+```js
+function changeAgeAndReference(person) {
+  person.age = 25;
+  person = {
+    name: "Abdul Ahad",
+    age: 50,
+  };
+  return person;
+}
+
+const personObj1 = {
+  name: "Ahad Ali",
+  age: 30,
+};
+
+const personObj2 = changeAgeAndReference(personObj1);
+console.log(personObj1); // { name: 'Ahad Ali', age: 25 }
+console.log(personObj2); // { name: 'Abdul Ahad', age: 50 }
+```
+
+✅ **Explanation**:
+
+- `person.age = 25` mutates the original object
+- `person = {...}` creates a **new object**, not affecting the original
 
 ---
 
@@ -2852,8 +3120,8 @@ class User {
 let user = new User("Ahad", "Ali");
 console.log(user.fullName); // Ahad Ali
 
-user.fullName = "John Cena";
-console.log(user.first); // John
+user.fullName = "Abdul Ahad Cena";
+console.log(user.first); // Abdul Ahad
 console.log(user.last); // Cena
 ```
 
@@ -3419,10 +3687,10 @@ console.log(rest); // [3, 4, 5]
 #### Object Destructuring with Rest
 
 ```js
-const user = { name: "John", age: 30, role: "admin" };
+const user = { name: "Abdul Ahad", age: 30, role: "admin" };
 const { name, ...details } = user;
 
-console.log(name); // John
+console.log(name); // Abdul Ahad
 console.log(details); // { age: 30, role: 'admin' }
 ```
 
@@ -3915,7 +4183,7 @@ Symbol("id") === Symbol("id"); // ❌ false
 const id = Symbol("id");
 
 let person = {
-  name: "John",
+  name: "Abdul Ahad",
   [id]: 1,
 };
 
@@ -4107,7 +4375,7 @@ When you call it using the object, JavaScript binds `this` to **that object**.
 
 ```js
 let person = {
-  name: "John",
+  name: "Abdul Ahad",
   sayHi: function () {
     return "hi";
   },
@@ -4122,13 +4390,13 @@ You can use `this` inside a method to access other properties in the same object
 
 ```js
 let person = {
-  name: "John",
+  name: "Abdul Ahad",
   sayHi: function () {
     return "hi " + this.name;
   },
 };
 
-console.log(person.sayHi()); // ✅ "hi John"
+console.log(person.sayHi()); // ✅ "hi Abdul Ahad"
 ```
 
 > ❗ Why not just use `person.name` directly?
@@ -4156,13 +4424,13 @@ function sayHi() {
   return "hi " + this.name;
 }
 
-let obj1 = { name: "John" };
+let obj1 = { name: "Abdul Ahad" };
 let obj2 = { name: "Wick" };
 
 obj1.say = sayHi;
 obj2.say = sayHi;
 
-console.log(obj1.say()); // ✅ "hi John"
+console.log(obj1.say()); // ✅ "hi Abdul Ahad"
 console.log(obj2.say()); // ✅ "hi Wick"
 ```
 
@@ -4173,7 +4441,7 @@ console.log(obj2.say()); // ✅ "hi Wick"
 
 ```js
 let person = {
-  name: "John",
+  name: "Abdul Ahad",
   sayHi: () => {
     return "hi " + this.name;
   },
@@ -4197,6 +4465,136 @@ So in the example above, `this` does not refer to `person`.
 
 ---
 
+## ❕ Bonus Questions
+
+### 17. Implicit `this` binding
+
+```js
+let user = {
+  name: "Ahad Ali",
+  age: 24,
+  childObj: {
+    newName: "Abdul Ahad",
+    getDetails() {
+      console.log(this.newName, "and", this.name);
+    },
+  },
+};
+user.childObj.getDetails(); // "Abdul Ahad and undefined"
+```
+
+✅ **Explanation**: `this` inside `getDetails()` refers to `childObj`, so only `newName` is accessible, not `name` from `user`
+
+### Arrow function with `this`
+
+```js
+let user = {
+  name: "Ahad Ali",
+  age: 24,
+  getDetails: () => {
+    console.log(this.name);
+  },
+};
+user.getDetails(); // undefined
+```
+
+✅ **Explanation**: Arrow functions don't have their own `this`. They inherit from the lexical scope, which here is global.
+
+### Nested arrow function with regular method
+
+```js
+let user = {
+  name: "Ahad Ali",
+  age: 24,
+  getDetails() {
+    const nestedArrow = () => console.log(this.name);
+    nestedArrow();
+  },
+};
+user.getDetails(); // "Ahad Ali"
+```
+
+✅ **Explanation**: Arrow functions use the surrounding `this`, which here is from the regular method.
+
+### Dot vs nested variable scope
+
+```js
+const user = {
+  firstName: "Ahad",
+  getName() {
+    const firstName = "Ahad Ali";
+    return this.firstName;
+  },
+};
+console.log(user.getName()); // "Ahad"
+```
+
+✅ **Explanation**: `this.firstName` refers to the property of the object, not the local variable.
+
+### `this` in object returned from function
+
+```js
+function makeUser() {
+  return {
+    name: "Ahad Ali",
+    ref: this,
+  };
+}
+let user = makeUser();
+console.log(user.ref); // Window or undefined (in strict mode)
+```
+
+✅ **Explanation**: `this` inside `makeUser()` refers to global object, not the returned object
+
+### 22. Method returning `this`
+
+```js
+function makeUser() {
+  return {
+    name: "Ahad Ali",
+    ref() {
+      return this;
+    },
+  };
+}
+let user = makeUser();
+console.log(user.ref().name); // "Ahad Ali"
+```
+
+✅ **Explanation**: `ref()` is a method, so `this` refers to the object returned by `makeUser()`
+
+### `this` lost in callback
+
+```js
+const user = {
+  name: "Ahad Ali",
+  logMessage() {
+    console.log(this.name);
+  },
+};
+setTimeout(user.logMessage, 1000); // undefined
+```
+
+✅ **Explanation**: The function loses its context in `setTimeout`. `this` becomes global.
+
+### Preserving context in `setTimeout`
+
+```js
+const user = {
+  name: "Ahad Ali!",
+  logMessage() {
+    console.log(this.name);
+  },
+};
+setTimeout(function () {
+  user.logMessage();
+}, 1000); // "Ahad Ali!"
+```
+
+✅ **Explanation**: Wrapping it in a function preserves the context
+
+---
+
 ## ❓ What is Function Borrowing in JavaScript?
 
 **Function borrowing** allows an object to use a method from another object.
@@ -4204,7 +4602,7 @@ This is done using `call()`, `apply()`, or `bind()` methods which let you set th
 
 ```js
 let person1 = {
-  name: "John",
+  name: "Abdul Ahad",
   greet: function () {
     console.log("Hello, " + this.name + "!");
   },
@@ -4233,7 +4631,7 @@ These methods are used to control what `this` refers to in a function.
 
 ```js
 const person = {
-  firstName: "John",
+  firstName: "Abdul Ahad",
   lastName: "Doe",
   fullName: function () {
     return this.firstName + " " + this.lastName;
@@ -4255,7 +4653,7 @@ console.log(person.fullName.call(anotherPerson)); // Jane Smith
 
 ```js
 const person = {
-  firstName: "John",
+  firstName: "Abdul Ahad",
   lastName: "Doe",
   fullName: function (city, country) {
     return `${this.firstName} ${this.lastName} from ${city}, ${country}`;
@@ -4278,7 +4676,7 @@ console.log(person.fullName.apply(anotherPerson, ["New York", "USA"]));
 
 ```js
 const person = {
-  firstName: "John",
+  firstName: "Abdul Ahad",
   lastName: "Doe",
   fullName: function (city, country) {
     return `${this.firstName} ${this.lastName} from ${city}, ${country}`;
@@ -4299,6 +4697,104 @@ console.log(boundFunction()); // Jane Smith from Paris, France
 | `call`  | ✅ Yes             | Individual values  | ❌ No                 | Direct call with custom `this` |
 | `apply` | ✅ Yes             | Array of arguments | ❌ No                 | Similar to `call`              |
 | `bind`  | ❌ No              | Individual values  | ✅ Yes                | Delayed call with fixed `this` |
+
+---
+
+## ❕ Bonus Questions
+
+### Using `.bind()` to preserve `this`
+
+```js
+const user = {
+  name: "Piyush",
+  logMessage() {
+    console.log(this.name);
+  },
+};
+
+const boundLog = user.logMessage.bind(user);
+setTimeout(boundLog, 1000); // "Piyush"
+```
+
+✅ **Explanation**: `.bind()` returns a new function with permanently bound `this` to `user`.
+
+### Chaining with `this`
+
+```js
+var calc = {
+  total: 0,
+  add(a) {
+    this.total += a;
+    return this;
+  },
+  subtract(a) {
+    this.total -= a;
+    return this;
+  },
+  multiply(a) {
+    this.total *= a;
+    return this;
+  },
+};
+const result = calc.add(10).multiply(5).subtract(30).add(10);
+console.log(result.total); // 30
+```
+
+✅ **Explanation**: Each method returns `this`, allowing method chaining.
+
+### `call()` usage example
+
+```js
+function greet() {
+  console.log(this.name);
+}
+const user = { name: "Ahad" };
+greet.call(user); // "Ahad"
+```
+
+✅ **Explanation**: `call()` invokes the function with `this` set to the provided object.
+
+### `apply()` usage example with Math.max
+
+```js
+const numbers = [5, 6, 2, 3, 7];
+console.log(Math.max.apply(null, numbers)); // 7
+```
+
+✅ **Explanation**: `apply()` spreads the array as arguments to `Math.max`
+
+### `bind()` chaining
+
+```js
+function f() {
+  console.log(this.name);
+}
+f = f.bind({ name: "John" }).bind({ name: "Ann" });
+f(); // John
+```
+
+✅ **Explanation**: Once bound, the function cannot be rebound. First bind sticks.
+
+### Partial application using `bind()`
+
+```js
+function checkPassword(success, failed) {
+  let password = "Ahad Ali";
+  if (password === "Ahad Ali") success();
+  else failed();
+}
+
+let user = {
+  name: "Abdul Ahad",
+  login(result) {
+    console.log(this.name + (result ? " login successful" : " login failed"));
+  },
+};
+
+checkPassword(user.login.bind(user, true), user.login.bind(user, false));
+```
+
+✅ **Explanation**: Pre-setting first argument with `bind()` creates a partially applied function.
 
 ---
 
@@ -4369,14 +4865,14 @@ delete myVar; // ❌ Fails silently or throws in strict mode
 
 ```js
 let person = {
-  name: "John",
+  name: "Abdul Ahad",
   age: 30,
   city: "New York",
 };
 
 delete person.age;
 
-console.log(person); // { name: 'John', city: 'New York' }
+console.log(person); // { name: 'Abdul Ahad', city: 'New York' }
 ```
 
 ### ❓ How to Check if a Key Exists in an Object?
@@ -5181,6 +5677,692 @@ End
 
 ---
 
+## ❓ When to Use Promise `.then()` / `.catch()` vs `async/await` vs `try/catch`?
+
+- Use `.then()` / `.catch()` for promise chaining.
+- Use `async/await` for cleaner syntax in async flows.
+- Use `try/catch` with `async/await` for error handling.
+
+```js
+// Using then/catch
+fetch("/api")
+  .then((res) => res.json())
+  .then((data) => console.log(data))
+  .catch((err) => console.error(err));
+
+// Using async/await + try/catch
+async function fetchData() {
+  try {
+    const res = await fetch("/api");
+    const data = await res.json();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+---
+
+## ❕ Bonus Questions
+
+### Promise Function Execution Flow
+
+```js
+console.log("start");
+const fn = () =>
+  new Promise((resolve, reject) => {
+    console.log(1);
+    resolve("success");
+  });
+
+console.log("middle");
+fn().then((res) => {
+  console.log(res);
+});
+console.log("end");
+```
+
+✅ **Output**:
+
+```
+start
+middle
+1
+end
+success
+```
+
+✅ **Explanation**: `new Promise` executes synchronously. `.then` runs after current call stack.
+
+### Promise Chaining with Catch
+
+```js
+function job() {
+  return new Promise((resolve, reject) => {
+    reject();
+  });
+}
+
+let promise = job();
+promise
+  .then(() => console.log("Success 1"))
+  .then(() => console.log("Success 2"))
+  .then(() => console.log("Success 3"))
+  .catch(() => console.log("Error 1"))
+  .then(() => console.log("Continue after catch"));
+```
+
+✅ **Output**:
+
+```
+Error 1
+Continue after catch
+```
+
+✅ **Explanation**: Once error is caught, subsequent `.then` continues the chain.
+
+### Conditional Rejection and Recovery
+
+```js
+function job(state) {
+  return new Promise((resolve, reject) => {
+    if (state) {
+      resolve("success");
+    } else {
+      reject("error");
+    }
+  });
+}
+
+job(true)
+  .then((data) => {
+    console.log(data);
+    return job(false);
+  })
+  .catch((err) => {
+    console.log(err);
+    return "Error caught";
+  })
+  .then((data) => {
+    console.log(data);
+    return job(true);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```
+
+✅ **Output**:
+
+```
+success
+error
+Error caught
+```
+
+✅ **Explanation**: Errors are caught and recovered. Final catch won't run if all promises succeed.
+
+### Throw inside Promise Chain
+
+```js
+job(true)
+  .then((data) => {
+    console.log(data); // success
+    return job(true);
+  })
+  .then((data) => {
+    if (data !== "victory") {
+      throw "Defeat";
+    }
+    return job(true);
+  })
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+```
+
+✅ **Output**:
+
+```
+success
+success
+Defeat
+```
+
+✅ **Explanation**: Custom errors thrown in `.then()` go to `.catch()`.
+
+### Recursive Promise Execution
+
+```js
+function importantAction(user) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(`Important action for ${user}`), 1000);
+  });
+}
+function likeTheVideo(video) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(`Liked the video: ${video}`), 1000);
+  });
+}
+function shareTheVideo(video) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(`Shared the video: ${video}`), 1000);
+  });
+}
+
+function promRecurse(funcPromises) {
+  if (funcPromises.length === 0) return;
+  const currPromise = funcPromises.shift();
+  currPromise
+    .then((res) => {
+      console.log(res);
+      promRecurse(funcPromises);
+    })
+    .catch((err) => console.error(err));
+}
+
+promRecurse([
+  importantAction("Ahad"),
+  likeTheVideo("Javascript Interview Questions"),
+  shareTheVideo("Javascript Interview Questions"),
+]);
+```
+
+✅ **Output**:
+
+```
+Important action for Ahad
+Liked the video: Javascript Interview Questions
+Shared the video: Javascript Interview Questions
+```
+
+✅ **Explanation**: Recursive function executes promises one by one in order.
+
+### Callback Hell → Promises
+
+```js
+// Callback Hell Example
+function step1(cb) {
+  setTimeout(() => {
+    console.log("Step 1");
+    cb();
+  }, 1000);
+}
+function step2(cb) {
+  setTimeout(() => {
+    console.log("Step 2");
+    cb();
+  }, 1000);
+}
+function step3(cb) {
+  setTimeout(() => {
+    console.log("Step 3");
+    cb();
+  }, 1000);
+}
+
+step1(() => {
+  step2(() => {
+    step3(() => {
+      console.log("Done");
+    });
+  });
+});
+```
+
+✅ **Problem**: Hard to read and maintain - **Callback Hell**.
+
+➡️ **Convert to Promises:**
+
+```js
+function step1() {
+  return new Promise((res) => {
+    setTimeout(() => {
+      console.log("Step 1");
+      res();
+    }, 1000);
+  });
+}
+function step2() {
+  return new Promise((res) => {
+    setTimeout(() => {
+      console.log("Step 2");
+      res();
+    }, 1000);
+  });
+}
+function step3() {
+  return new Promise((res) => {
+    setTimeout(() => {
+      console.log("Step 3");
+      res();
+    }, 1000);
+  });
+}
+
+step1()
+  .then(() => step2())
+  .then(() => step3())
+  .then(() => console.log("Done"));
+```
+
+✅ **Result**: Flat, readable, and maintainable promise chain.
+
+### Async/Await Version of the Above
+
+```js
+async function runSteps() {
+  await step1();
+  await step2();
+  await step3();
+  console.log("Done");
+}
+
+runSteps();
+```
+
+✅ **Explanation**: Even more readable with `async/await`. Each step runs sequentially like synchronous code.
+
+### Error Handling with Try/Catch in Async
+
+```js
+async function runStepsSafely() {
+  try {
+    await step1();
+    await step2();
+    await step3();
+    console.log("Done");
+  } catch (err) {
+    console.error("Something went wrong:", err);
+  }
+}
+
+runStepsSafely();
+```
+
+✅ **Best Practice**: Always wrap async logic with try/catch to handle rejections properly.
+
+### ⚠️ Common Trap: Mixing Async/Await and Then
+
+```js
+async function test() {
+  return "Hello";
+}
+
+// This works but is less readable
+const result = test().then((res) => console.log(res)); // Hello
+
+// Better approach
+async function betterTest() {
+  const res = await test();
+  console.log(res);
+}
+betterTest();
+```
+
+❌ Mixing `.then()` with `await` often leads to confusion. Stick with one style.
+
+## ❓ What is Event Propagation?
+
+**Event Propagation** is the mechanism that defines how events travel through the DOM (Document Object Model) when an event is fired. It consists of **three phases**:
+
+1. **Capturing Phase** (Trickle-down): The event travels from the document root to the target element.
+2. **Target Phase**: The event reaches the actual target element where the interaction occurred.
+3. **Bubbling Phase** (Bubble-up): The event then bubbles back up from the target element to the document root.
+
+```plaintext
+document → html → body → parent → target  (Capturing)
+                    target                (Target Phase)
+target → parent → body → html → document  (Bubbling)
+```
+
+✅ **Why It's Important:**
+Understanding propagation helps you:
+
+- Decide where to place event listeners
+- Prevent unwanted behavior by stopping propagation
+- Delegate events efficiently
+
+---
+
+## ❓ What actually do Events do and why stop or not stop them?
+
+### ✅ What Do Events Do?
+
+In JavaScript, **events** allow interaction with the DOM when users perform actions such as:
+
+- Clicking a button
+- Typing into an input
+- Hovering over an element
+
+Events trigger **handlers (callbacks)** that run code in response to those interactions.
+
+#### Example: Button Click
+
+```html
+<button id="btn">Click Me</button>
+```
+
+```js
+document.getElementById("btn").addEventListener("click", () => {
+  console.log("Button clicked!");
+});
+```
+
+### ✅ Why Stop Events?
+
+Stopping an event is useful when:
+
+- You want to **prevent it from reaching parent elements** (stopPropagation)
+- You want to **prevent other listeners on the same element** (stopImmediatePropagation)
+- You want to **block the default browser behavior** (preventDefault)
+
+#### Example: Prevent Event Bubbling
+
+```js
+const outer = document.querySelector(".outer");
+const inner = document.querySelector(".inner");
+
+outer.addEventListener("click", () => console.log("Outer clicked"));
+inner.addEventListener("click", (e) => {
+  e.stopPropagation();
+  console.log("Inner clicked");
+});
+```
+
+✅ Clicking `.inner` will not trigger `.outer`'s handler.
+
+#### Example: Prevent Default Behavior
+
+```js
+document.querySelector("form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  console.log("Form submission prevented");
+});
+```
+
+✅ Prevents form from actually submitting or reloading the page.
+
+### ❌ When **Not** to Stop Events?
+
+Avoid stopping events when:
+
+- You want **default behavior**, like links navigating
+- You're relying on **bubbling** for delegation
+- Other handlers might be important (e.g. analytics tracking)
+
+✅ **Best Practice:** Only stop an event if absolutely necessary. Overuse can break natural UI behavior and debugging.
+
+## ❓ What is Event Bubbling? (with Example)
+
+**Event Bubbling** is when an event starts at the **target element** and **bubbles up** through its ancestors in the DOM.
+
+```html
+<div onclick="alert('Div')">
+  <form onclick="alert('Form')">
+    <button onclick="alert('Button')">Click Me</button>
+  </form>
+</div>
+```
+
+✅ **What Happens When You Click the Button?**
+
+- The button's `onclick` runs first
+- Then the form's `onclick`
+- Finally the div's `onclick`
+
+🧠 **Output Order:**
+
+```
+Button → Form → Div
+```
+
+✅ **Use Case:** Most common phase for attaching handlers (default in `addEventListener`).
+
+---
+
+## ❓ What is Event Capturing?
+
+**Event Capturing** is the opposite of bubbling — the event travels from the **document down to the target**.
+
+To enable capturing, set the `capture: true` flag:
+
+```js
+const form = document.querySelector("form");
+
+form.addEventListener(
+  "click",
+  function () {
+    alert("Form clicked during capturing");
+  },
+  { capture: true }
+);
+```
+
+🧠 **How It Works:**
+
+- Listener triggers **before** bubbling phase begins
+
+✅ **Use Case:** Useful when you want to catch events early, especially on parent/ancestor nodes.
+
+---
+
+## ❓ How to Stop Bubbling and Capturing?
+
+To stop the event from continuing to propagate through the DOM:
+
+```js
+const button = document.querySelector("button");
+
+button.addEventListener("click", function (event) {
+  event.stopPropagation();
+  alert("Button clicked and propagation stopped");
+});
+```
+
+✅ **Explanation:**
+
+- `stopPropagation()` halts the event from moving further in **either direction** (bubbling or capturing)
+
+🧠 Also consider:
+
+- `stopImmediatePropagation()` if multiple listeners exist on the same element
+
+---
+
+## ❓ What is the Difference between `event.target` vs `this` vs `event.currentTarget`?
+
+```js
+const div = document.querySelector(".wrapper");
+
+div.addEventListener("click", function (event) {
+  console.log("event.target:", event.target); // Actual element clicked
+  console.log("this:", this); // Element with handler
+  console.log("event.currentTarget:", event.currentTarget); // Same as 'this'
+});
+```
+
+✅ **Key Differences:**
+
+- `event.target`: The actual element that was clicked
+- `this` / `event.currentTarget`: The element on which the event listener is attached
+
+🧠 **Tip:** Use `currentTarget` for delegation; avoid assumptions from `target`
+
+---
+
+## ❓ What is Event Delegation?
+
+**Event Delegation** is a pattern where a **single event listener** on a parent element handles events from multiple child elements.
+
+```js
+document.querySelector(".modalContainer").addEventListener("click", (e) => {
+  if (e.target.classList.contains("modal")) {
+    toggleModal(false);
+  }
+});
+```
+
+✅ **Why It's Powerful:**
+
+- You don't need to attach listeners to every child
+- Great for dynamically added elements
+
+🧠 **Real Example:** Handling clicks on a dynamic list:
+
+```js
+ul.addEventListener("click", function (e) {
+  if (e.target.tagName === "LI") {
+    alert("Clicked item: " + e.target.textContent);
+  }
+});
+```
+
+### Event Propagation Flow (Summary)
+
+```plaintext
+// Event Phases (Clicking on a button inside a div)
+
+Capturing Phase: document → html → body → div → button
+Target Phase:    button (event occurs here)
+Bubbling Phase:  button → div → body → html → document
+```
+
+🧠 By default, `addEventListener` uses **bubbling** phase unless `{ capture: true }` is specified.
+
+---
+
+## ❓ Do All Events Bubble?
+
+❌ **No.** Some events do not bubble by default:
+
+- `focus`
+- `blur`
+- `load`
+- `mouseenter` / `mouseleave`
+
+✅ **Workaround:**
+Use their bubbling counterparts:
+
+- `focusin` instead of `focus`
+- `focusout` instead of `blur`
+- Custom bubbling events with `dispatchEvent`
+
+---
+
+## ❓ What is the Difference Between `stopPropagation()` and `stopImmediatePropagation()`?
+
+```js
+const btn = document.querySelector("button");
+
+btn.addEventListener("click", (e) => {
+  e.stopImmediatePropagation();
+  console.log("Listener 1");
+});
+
+btn.addEventListener("click", () => {
+  console.log("Listener 2"); // ❌ Won’t execute
+});
+```
+
+✅ **Comparison:**
+
+- `stopPropagation()`: Stops propagation to ancestor elements only
+- `stopImmediatePropagation()`: Also prevents other listeners on **same element** from running
+
+🧠 Use it cautiously when you need strict control of handler execution order.
+
+---
+
+## ❓ What Are passive, once, and capture Options in addEventListener?
+
+```js
+const element = document.querySelector("#scrollable");
+
+element.addEventListener(
+  "scroll",
+  (e) => {
+    console.log("Scrolled!");
+  },
+  {
+    passive: true, // Don't block UI thread (good for scroll/touch)
+    once: true, // Run only once then auto-remove
+    capture: false, // Run in bubbling phase (default)
+  }
+);
+```
+
+✅ **Breakdown:**
+
+- `passive`: Improves performance, especially for scroll/touch
+- `once`: Perfect for setup/one-time actions (e.g., welcome popup)
+- `capture`: Flip between bubbling and capturing
+
+🧠 Always match these flags to performance and phase needs in production apps.
+
+---
+
+## ❕ Bonus Question
+
+How to Create a Modal That Closes on Outside Click?
+
+#### ✅ HTML
+
+```html
+<div class="modalContainer">
+  <div class="modal">
+    <p>This is the modal content</p>
+  </div>
+</div>
+<button class="modalButton">Open Modal</button>
+```
+
+#### ✅ CSS
+
+```css
+.modalContainer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+}
+```
+
+#### ✅ JavaScript
+
+```js
+const container = document.querySelector(".modalContainer");
+const button = document.querySelector(".modalButton");
+
+button.addEventListener("click", () => toggleModal(true));
+
+function toggleModal(show) {
+  container.style.display = show ? "flex" : "none";
+}
+
+container.addEventListener("click", (e) => {
+  if (e.target.classList.contains("modalContainer")) toggleModal(false);
+});
+```
+
+🧠 **Delegation Used:** The modal listens to its own container to detect outside clicks.
+
+---
+
 ## ❓ What Are the Major ECMAScript Updates? (ES4, ES5, ES6, etc.)
 
 ECMAScript is the standard specification on which JavaScript is based.
@@ -5412,70 +6594,494 @@ const heading = document.getElementById("main-heading");
 
 ---
 
-## ❓ What is the Difference between Local Storage vs Session Storage in JavaScript?
+## ❓ What is the Difference between Local Storage vs Session Storage vs Cookies in JavaScript?
 
-Both `localStorage` and `sessionStorage` are part of the **Web Storage API** introduced in **HTML5**.
+All three are client-side storage mechanisms used to **store data in the browser**, but they differ in:
 
-They allow you to **store key-value pairs in the browser** — without needing to send the data to a server.
+- **Lifetime** (how long data persists)
+- **Scope** (tab vs window vs server)
+- **Size limits**
+- **Use cases** (frontend state vs authentication/session)
 
-| Feature          | Local Storage                                            | Session Storage                               |
-| ---------------- | -------------------------------------------------------- | --------------------------------------------- |
-| Lifetime         | Persists **even after browser is closed**                | Cleared **once the tab or browser is closed** |
-| Scope            | Available across **all tabs/windows** of the same origin | Available **only in the same tab/window**     |
-| Storage Limit    | ~5MB                                                     | ~5MB                                          |
-| API Availability | `window.localStorage`                                    | `window.sessionStorage`                       |
-| Use Case         | Long-term data (e.g., theme, auth token)                 | Temporary data (e.g., form state, UI tabs)    |
+Understanding these differences is important in interviews when discussing **state management**, **authentication**, or **client-server communication**.
 
-### Local Storage
+### Quick Overview
+
+- `localStorage`: Stores persistent data on the browser (doesn’t expire).
+- `sessionStorage`: Stores temporary data that is cleared once the tab/window is closed.
+- `cookies`: Can be accessed both by client and server. Sent with every HTTP request.
+
+| Feature             | `localStorage`                                   | `sessionStorage`                       | `cookies`                                      |
+| ------------------- | ------------------------------------------------ | -------------------------------------- | ---------------------------------------------- |
+| **Lifetime**        | Until explicitly cleared (persists after reload) | Only while the tab/window is open      | Can expire (set via expiry) or session-only    |
+| **Scope**           | Across tabs/windows of same origin               | Same tab/window only                   | Across tabs/windows (and sent with requests)   |
+| **Storage Limit**   | ~5MB                                             | ~5MB                                   | ~4KB per cookie (limited number per domain)    |
+| **Data Type**       | String only                                      | String only                            | String only                                    |
+| **Accessible By**   | `window.localStorage`                            | `window.sessionStorage`                | `document.cookie`, also accessible by server   |
+| **Sent to Server**  | ❌ No                                            | ❌ No                                  | ✅ Yes, sent with every HTTP request           |
+| **Common Use Case** | User prefs, dark mode, auth tokens (client-side) | Unsaved form inputs, filters (per tab) | Auth/session tokens, tracking, CSRF prevention |
+
+### ✅ localStorage
 
 ```js
-// Store data
-localStorage.setItem("name", "Ahad");
+// ✅ Store string
+localStorage.setItem("username", "Ahad");
 
-// Retrieve data
-const name = localStorage.getItem("name");
+// ✅ Retrieve value
+const name = localStorage.getItem("username");
+console.log(name); // "Ahad"
 
-// Remove data
-localStorage.removeItem("name");
+// ✅ Remove specific item
+localStorage.removeItem("username");
 
-// Clear all data
+// ✅ Clear everything
 localStorage.clear();
 ```
 
-### Session Storage
+### ✅ sessionStorage
 
 ```js
-// Store data
-sessionStorage.setItem("user", "Ahad");
+// ✅ Store session-specific data
+sessionStorage.setItem("sessionUser", "Ahad");
 
-// Retrieve data
-const user = sessionStorage.getItem("user");
+// ✅ Retrieve it
+const user = sessionStorage.getItem("sessionUser");
+console.log(user); // "Ahad"
 
-// Remove data
-sessionStorage.removeItem("user");
+// ✅ Remove specific item
+sessionStorage.removeItem("sessionUser");
 
-// Clear all data
+// ✅ Clear everything
 sessionStorage.clear();
 ```
 
-> ⚠️ Note:
-> Both only store strings. To store objects, use `JSON.stringify()` and `JSON.parse()`.
+### ✅ Cookies
 
 ```js
-const userObj = { name: "Ahad Ali", age: 22 };
-localStorage.setItem("user", JSON.stringify(userObj));
+// ✅ Set cookie (expires in 1 day)
+document.cookie =
+  "token=abc123; expires=" + new Date(Date.now() + 86400000).toUTCString();
 
-const retrievedUser = JSON.parse(localStorage.getItem("user"));
-console.log(retrievedUser.name); // "Ahad Ali"
+// ✅ Read cookie
+console.log(document.cookie); // All cookies for current domain
+
+// ✅ Update cookie (same name replaces old one)
+document.cookie = "token=newToken123; path=/";
 ```
 
-## ❓ What is API
+### Storing Objects in localStorage/sessionStorage
+
+```js
+const userObj = { name: "Ahad Ali", role: "Admin" };
+
+// ✅ Convert object to string before storing
+localStorage.setItem("user", JSON.stringify(userObj));
+
+// ✅ Retrieve and parse back
+const parsedUser = JSON.parse(localStorage.getItem("user"));
+console.log(parsedUser.name); // "Ahad Ali"
+```
+
+> ⚠️ Note: Cookies do not support objects or `JSON.stringify()` natively. Must be stringified manually and parsed if needed.
+
+### Insight: When to Use What?
+
+| Scenario                          | Best Option      | Why?                                                        |
+| --------------------------------- | ---------------- | ----------------------------------------------------------- |
+| Persist user theme across reload  | `localStorage`   | Long-term preference storage (even after browser restarts)  |
+| Temporary cart state (single tab) | `sessionStorage` | Cleared when tab closes, useful for isolated session states |
+| Auth token shared across server   | `cookie`         | Automatically sent with requests, configurable via flags    |
+
+### Security Considerations
+
+- ❌ Do not store sensitive info (like passwords) in any of these without encryption.
+- ✅ Use `HttpOnly` and `Secure` flags with cookies for auth tokens.
+- ❌ Avoid storing JWTs in localStorage if XSS is a risk. Prefer cookies with proper flags.
+
+- Use **localStorage** for persistent, client-only data (preferences, cache).
+- Use **sessionStorage** for temporary UI states (per tab).
+- Use **cookies** when server-side needs access to the data (auth/session).
+
+> 💡 Use a combination smartly depending on performance, access, and security requirements.
+
+---
+
+## ❓ What Is Bundling?
+
+**Bundling** is the process of combining multiple JavaScript (and other) files into a **single file** (or few files).
+
+### Why?
+
+- Reduces number of HTTP requests
+- Improves performance
+- Simplifies dependency management
+
+### Tools:
+
+- Webpack, Vite, Parcel, Rollup
+
+---
+
+## ❓ What Is Chunking?
+
+**Chunking** is the process of breaking bundled code into smaller **chunks** that can be loaded **on-demand**.
+
+### Benefits:
+
+- Faster initial page load
+- Loads only what’s needed
+
+### Example:
+
+In Webpack:
+
+```js
+import("./Dashboard").then(loadDashboard);
+```
+
+---
+
+## ❓ What is the Difference between Params (Parameters) and Arguments?
+
+### Parameters
+
+- These are **placeholders/variables** defined in the **function definition**.
+- They represent the inputs that the function expects.
+
+```js
+function add(a, b) {
+  // 'a' and 'b' are parameters
+  return a + b;
+}
+```
+
+### Arguments
+
+- These are the actual values passed to the function when it's called.
+- They fill in the parameters.
+
+```js
+console.log(add(5, 3));
+// 5 and 3 are arguments passed into the function
+```
+
+> Tip: Parameters = Expectation, Arguments = Reality 😄
+
+---
+
+## ❓ What is AJAX in JavaScript?
+
+**AJAX** stands for **Asynchronous JavaScript and XML**.
+
+It’s a technique used to **send/receive data from a server** **without reloading** the entire page.
+
+#### ✅ Why Use AJAX?
+
+- ✅ Improves user experience (no page reloads)
+- ✅ Enables **real-time updates**
+- ✅ Common in chat apps, search suggestions, infinite scroll, etc.
+
+- You can fetch data **asynchronously** using `XMLHttpRequest` or `fetch()` (modern).
+- AJAX works behind the scenes to update just part of a web page.
+
+#### XMLHttpRequest Lifecycle (States)
+
+| `readyState` | Meaning                    |
+| ------------ | -------------------------- |
+| `0`          | Request not initialized    |
+| `1`          | Connection established     |
+| `2`          | Request received           |
+| `3`          | Processing request         |
+| `4`          | Request finished and ready |
+
+#### Making an AJAX Request (Step by Step)
+
+```js
+// ✅ Step 1: Create an instance of XMLHttpRequest
+let xhr = new XMLHttpRequest();
+
+// ✅ Step 2: Open the request (type, URL, async=true)
+xhr.open("GET", "https://jsonplaceholder.typicode.com/posts", true);
+
+// ✅ Step 3: Define the callback function to handle the response
+xhr.onreadystatechange = function () {
+  // Check if request is done and response is OK
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    let data = JSON.parse(xhr.responseText);
+    console.log(data); // ✅ Print API response data
+  }
+};
+
+// ✅ Step 4: Send the request
+xhr.send();
+```
+
+#### ✅ Output:
+
+```js
+[
+  { userId: 1, id: 1, title: "...", body: "..." },
+  { userId: 1, id: 2, title: "...", body: "..." },
+  ...
+]
+```
+
+#### AJAX vs `fetch()` (Modern)
+
+| Feature       | XMLHttpRequest        | fetch()                     |
+| ------------- | --------------------- | --------------------------- |
+| Syntax        | Older & verbose       | Modern & cleaner            |
+| Return Type   | Callback-based        | Promise-based               |
+| JSON Handling | Manual `JSON.parse()` | Built-in with `.json()`     |
+| Usage         | Still supported       | Recommended for modern apps |
+
+#### Bonus: Using `fetch()` for Same Request
+
+```js
+fetch("https://jsonplaceholder.typicode.com/posts")
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.error("Error:", error));
+```
+
+---
+
+## 🔥 Bonus Questions
+
+### ❓ How Does the Web Work (with JavaScript Page Load Flow)
+
+The web works through a **client-server architecture**. When a user visits a website, here’s what happens behind the scenes:
+
+#### Lifecycle:
+
+1. **User Enters URL:**
+
+   - The browser takes the domain (e.g., `example.com`).
+
+2. **DNS Resolution:**
+
+   - A DNS server converts the domain into an IP address.
+
+3. **HTTP Request Sent:**
+
+   - Browser sends a GET request to that IP/server.
+
+4. **Server Responds:**
+
+   - It returns resources like HTML, CSS, JavaScript, images, etc.
+
+5. **HTML Parsing Begins:**
+
+   - Browser parses the HTML line by line.
+   - When a `<script>` tag is found:
+     - If it's a normal script, parsing **pauses** to fetch & run JS.
+     - If it’s `async` or `defer`, behavior varies (see below).
+
+6. **JavaScript Execution:**
+
+   - JS runs in the **Global Execution Context**.
+   - Memory is allocated for variables/functions during the creation phase.
+   - JS interacts with the DOM if it's ready.
+
+7. **DOM Construction:**
+
+   - As HTML is parsed, the browser builds the DOM tree.
+   - JavaScript can access and modify it (if available).
+
+8. **Page Load Completion:**
+   - All resources are loaded.
+   - `DOMContentLoaded` fires after DOM is ready.
+   - `window.onload` fires after everything (images, styles, etc) is loaded.
+
+#### Async vs Defer:
+
+| Attribute | When is it executed?       | Does it block HTML parsing? |
+| --------- | -------------------------- | --------------------------- |
+| `async`   | As soon as it’s downloaded | ✅ Yes                      |
+| `defer`   | After HTML is fully parsed | ❌ No                       |
+
+#### What Does It Mean?
+
+##### `async`
+
+- Script loads **asynchronously** while HTML is parsing.
+- **Execution happens immediately after downloading**, which might be **before HTML is fully parsed**.
+- Can cause **race conditions** if script tries to access unparsed DOM.
+
+```html
+<!-- This script may execute before DOM is ready -->
+<script async src="analytics.js"></script>
+```
+
+##### `defer`
+
+- Script also loads **asynchronously**, but waits until **HTML parsing is complete** before executing.
+- Ensures all DOM is built, which means safer DOM interactions.
+- Best for scripts that **interact with the DOM** but don’t need to block rendering.
+
+```html
+<!-- Safe to interact with DOM -->
+<script defer src="main.js"></script>
+```
+
+#### When to Use `defer`?
+
+Use `defer` in `<script>` tags when:
+
+- You want non-blocking JS execution.
+- Scripts depend on the DOM being fully available.
+
+✅ Defer ensures script loads in parallel and runs after parsing HTML.
+
+#### Behind the Scenes (Simplified):
+
+```txt
+User ➡️ Browser ➡️ DNS ➡️ Server ➡️ HTTP Response ➡️ Parse ➡️ Run JS ➡️ Render ➡️ Interact
+```
+
+#### Highlights:
+
+- Browser reads HTML from top to bottom.
+- JS execution can **block** or **not block** parsing depending on script attributes.
+- JavaScript can manipulate the DOM **only after it's built**.
+- Global Execution Context is where JS first runs.
+- Events like `DOMContentLoaded` and `window.onload` are **key timing markers** for DOM and page readiness.
+
+---
+
+### ❓ What Is the Lifecycle of a Browser?
+
+The **browser lifecycle** refers to the full journey a web page goes through from initial load to user interaction.
+
+#### Browser Lifecycle Phases:
+
+1. **Navigation/URL Entry:**
+
+   - User types in a URL or clicks a link.
+
+2. **Request Phase:**
+
+   - DNS lookup → TCP connection → HTTPS handshake → HTTP request.
+
+3. **Response Phase:**
+
+   - Server responds with HTML, CSS, JS, etc.
+
+4. **Parsing & Rendering:**
+
+   - HTML → DOM Tree
+   - CSS → CSSOM Tree
+   - DOM + CSSOM → Render Tree
+   - Layout → Paint → Composite
+
+5. **Script Execution:**
+
+   - JavaScript is loaded & executed.
+   - Event listeners, DOM manipulation, etc.
+
+6. **Page Load Events:**
+
+   - `DOMContentLoaded` and `window.onload`
+
+7. **User Interaction:**
+
+   - Input, scrolls, clicks handled via JS event loop.
+
+8. **Repaint & Reflow (optional):**
+   - DOM/CSS changes may trigger visual updates.
+
+---
+
+### ❓ What Are the Fundamentals of the Web?
+
+#### Key Building Blocks:
+
+1. **HTML (Structure):**
+
+   - Defines the structure of a web page (headings, paragraphs, links, etc).
+
+2. **CSS (Presentation):**
+
+   - Controls how content looks (layout, color, font).
+
+3. **JavaScript (Behavior):**
+
+   - Adds interactivity (clicks, dynamic data, form validation).
+
+4. **HTTP/HTTPS:**
+
+   - Protocols used to transfer data between client and server.
+
+5. **DNS:**
+
+   - Converts domain names into IP addresses.
+
+6. **Web Browser:**
+
+   - A software to fetch, interpret and display web content.
+
+7. **DOM (Document Object Model):**
+
+   - An in-memory tree structure representing the HTML document.
+
+8. **URL (Uniform Resource Locator):**
+
+   - A unique address used to locate a resource on the web.
+
+9. **Client-Server Architecture:**
+   - Browser (client) sends requests, and a server sends back responses.
+
+---
+
+### ❓ Why and Why Not Use JavaScript?
+
+#### ✅ Why Use JavaScript:
+
+- Interactivity and dynamic behavior
+- Full control over DOM manipulation
+- Supported across all browsers
+- Rich ecosystem and community
+- Versatile: Can be used for frontend, backend, testing, automation
+
+#### ❌ Why _Not_ Always Use JavaScript:
+
+- Overuse can impact performance
+- SEO issues for JS-rendered content
+- Insecure JS can lead to XSS vulnerabilities
+- Complex apps may become hard to maintain without structure
+
+---
+
+### ❓ Should JS Be Used in `<head>`?
+
+Using JS in the `<head>` **without `defer` or `async`** is discouraged:
+
+#### ❌ Why it's problematic:
+
+- Scripts in the `<head>` **block HTML parsing**.
+- This delays the rendering of the page.
+
+#### ✅ Recommended:
+
+Use `defer` if placing JS in the head:
+
+```html
+<head>
+  <script defer src="main.js"></script>
+</head>
+```
+
+This ensures the script loads in parallel and executes **after** HTML parsing, improving page performance.
+
+---
+
+### ❓ What is API
 
 An **API** (Application Programming Interface) is a set of rules that allows different software applications to **communicate with each other**.
 
 It works like a **bridge** between systems, allowing them to send and receive **HTTP requests and responses**.
 
-### How API Works
+#### How API Works
 
 Every API interaction usually includes:
 
@@ -5483,7 +7089,7 @@ Every API interaction usually includes:
 2. **Server** – Processes the request and sends back a response
 3. **API** – Acts as the **middleman** that connects the two
 
-### Weather App
+##### Weather App
 
 - **Client**: Weather app (like AccuWeather mobile app)
 - **API**: Weather service API
@@ -5495,7 +7101,7 @@ Flow:
 - API communicates with the server
 - Server responds with data (temperature, humidity, etc.)
 
-### Ridesharing App
+##### Ridesharing App
 
 - **Client**: Uber app
 - **API**: Ridesharing API
@@ -5507,7 +7113,7 @@ Flow:
 - API talks to the server
 - Server sends back list of available drivers
 
-### E-commerce Platform
+##### E-commerce Platform
 
 - **Client**: Online store (React/Next.js frontend)
 - **API**: Payment gateway API (e.g., PayPal, Stripe)
@@ -5519,7 +7125,7 @@ Flow:
 - API securely sends it to the payment server
 - Server processes the payment and returns confirmation
 
-### Why Are APIs Important?
+#### Why Are APIs Important?
 
 1. **Reusability**
 
@@ -5537,7 +7143,7 @@ Flow:
 
 ---
 
-## ❓ What are the types of API?
+### ❓ What are the types of API?
 
 APIs come in various types based on:
 
@@ -5545,9 +7151,9 @@ APIs come in various types based on:
 - **Architecture** – How they work (REST, GraphQL, SOAP, gRPC)
 - **Use Case** – Where they are used (Web, OS, SDKs)
 
-### 1. Based on Access Level
+#### 1. Based on Access Level
 
-#### Public APIs (Open APIs)
+##### Public APIs (Open APIs)
 
 - Accessible to everyone (sometimes with registration)
 - Often used to build third-party apps or public services
@@ -5556,7 +7162,7 @@ APIs come in various types based on:
   - GitHub API
   - Google Maps API
 
-#### Private APIs
+##### Private APIs
 
 - Used internally within an organization
 - Not exposed to the public
@@ -5565,7 +7171,7 @@ APIs come in various types based on:
   - Company payroll system API
   - Internal HR data API
 
-#### Partner APIs
+##### Partner APIs
 
 - Shared with trusted business partners
 - Often secured with API keys or agreements
@@ -5575,7 +7181,7 @@ APIs come in various types based on:
   - Amazon Seller API
   - Airline booking APIs for travel sites
 
-#### Composite APIs
+##### Composite APIs
 
 - Combine multiple services or endpoints in one call
 - Used to reduce multiple network requests
@@ -5583,7 +7189,7 @@ APIs come in various types based on:
   - Travel booking API (flight + hotel info)
   - Social dashboard API (posts + user info in one)
 
-#### Simple APIs
+##### Simple APIs
 
 - Handle basic data exchanges
 - May not follow strict architecture rules like REST or SOAP
@@ -5591,9 +7197,9 @@ APIs come in various types based on:
   - File upload APIs
   - Contact form submission API
 
-### 2. Based on Protocol / Architecture
+#### 2. Based on Protocol / Architecture
 
-#### REST API (Representational State Transfer)
+##### REST API (Representational State Transfer)
 
 - Most widely used
 - Uses HTTP, JSON, URLs
@@ -5602,7 +7208,7 @@ APIs come in various types based on:
   - Twitter API (tweets)
   - Google Maps API (location)
 
-#### SOAP API (Simple Object Access Protocol)
+##### SOAP API (Simple Object Access Protocol)
 
 - XML-based communication
 - Highly secure and strict (mostly used in enterprises)
@@ -5611,7 +7217,7 @@ APIs come in various types based on:
   - PayPal API (secure payments)
   - FedEx API (shipping details)
 
-#### GraphQL API
+##### GraphQL API
 
 - Client specifies exactly what data is needed
 - Single endpoint handles all queries
@@ -5620,7 +7226,7 @@ APIs come in various types based on:
   - GitHub GraphQL API
   - Shopify Storefront API
 
-#### gRPC API (Google Remote Procedure Call)
+##### gRPC API (Google Remote Procedure Call)
 
 - Uses Protocol Buffers (binary data format)
 - Fast, efficient, ideal for microservices
@@ -5629,9 +7235,9 @@ APIs come in various types based on:
   - Real-time chat systems
   - Internal service-to-service communication
 
-### 3. Based on Use Case
+#### 3. Based on Use Case
 
-#### Web APIs
+##### Web APIs
 
 - Expose backend functionality to web or mobile apps
 - Mostly REST or GraphQL based
@@ -5639,7 +7245,7 @@ APIs come in various types based on:
   - YouTube Data API
   - Stripe Payments API
 
-#### Library APIs / SDKs
+##### Library APIs / SDKs
 
 - Part of programming libraries or frameworks
 - Used by developers to access pre-built functions
@@ -5647,7 +7253,7 @@ APIs come in various types based on:
   - NumPy API (Python)
   - Firebase SDK (JavaScript)
 
-#### Operating System APIs
+##### Operating System APIs
 
 - Provided by operating systems to interact with system hardware
 - Examples:
@@ -5680,7 +7286,7 @@ APIs come in various types based on:
 
 ---
 
-## ❓ What is REST (Representational State Transfer) / RESTful API?
+### ❓ What is REST (Representational State Transfer) / RESTful API?
 
 **REST** is a set of architectural rules used to design **web services** that communicate using the **HTTP protocol**.
 
@@ -5693,7 +7299,7 @@ RESTful APIs allow **clients** (like browsers or mobile apps) to talk to the **s
 | Update    | `PUT` / `PATCH` |
 | Delete    | `DELETE`        |
 
-### Key Principles of RESTful APIs:
+#### Key Principles of RESTful APIs:
 
 1. **Stateless**
 
@@ -5717,7 +7323,7 @@ RESTful APIs allow **clients** (like browsers or mobile apps) to talk to the **s
 
 ---
 
-## ❓ How are REST APIs Stateless?
+### ❓ How are REST APIs Stateless?
 
 In a **stateless REST API**:
 
@@ -5731,7 +7337,7 @@ This means:
 - ✅ Easier to scale across servers
 - ✅ Clients handle their own state (e.g., storing token locally)
 
-### Real-World Example:
+#### Real-World Example:
 
 ```http
 GET /dashboard
@@ -5742,7 +7348,7 @@ Authorization: Bearer ey123abc...
 - It won’t remember if this user made a request 5 minutes ago.
 - Every request is self-contained.
 
-### ❓ Agar Token Browser me Store Hota Hai, to REST Stateless Kaise Hai?
+#### ❓ Agar Token Browser me Store Hota Hai, to REST Stateless Kaise Hai?
 
 - Token client ke paas store hota hai (browser side)
 - Server us token ko sirf verify karta hai — yaad nahi rakhta!
@@ -5771,7 +7377,7 @@ Jab bhi API request bheji jati hai, token request ke sath attach hota hai
 - Na woh “login hua tha ya nahi” yaad rakhta hai
 - Har request pe token verify karo, user identify karo, response bhejo — bas
 
-## ❓ What is the Difference between Stateful Applications and Stateless Applications?
+### ❓ What is the Difference between Stateful Applications and Stateless Applications?
 
 | **Stateful Applications**                                                                                            | **Stateless REST APIs**                                                                                      |
 | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -5794,7 +7400,7 @@ const app = express();
 const session = {};
 
 app.post("/login", (req, res) => {
-  session.user = { id: 1, name: "John" }; // Server remembers user
+  session.user = { id: 1, name: "Abdul Ahad" }; // Server remembers user
   res.send("Logged in");
 });
 
@@ -5832,7 +7438,7 @@ const app = express();
 app.get("/user", (req, res) => {
   const apiKey = req.headers["authorization"];
   if (apiKey === "Bearer YOUR_API_KEY") {
-    res.json({ id: 1, name: "John" }); // Returns data without maintaining state
+    res.json({ id: 1, name: "Abdul Ahad" }); // Returns data without maintaining state
   } else {
     res.status(401).send("Unauthorized");
   }
@@ -5845,7 +7451,7 @@ app.listen(3000, () => {
 
 ---
 
-## ❓ What are the types of API requests (Methods)?
+### ❓ What are the types of API requests (Methods)?
 
 1. GET Method
 
@@ -6016,112 +7622,7 @@ Server pe **koi naya ya alag effect nahi hota** multiple requests se.
 
 ---
 
-## ❓ What is the Difference between Params (Parameters) and Arguments?
-
-### Parameters
-
-- These are **placeholders/variables** defined in the **function definition**.
-- They represent the inputs that the function expects.
-
-```js
-function add(a, b) {
-  // 'a' and 'b' are parameters
-  return a + b;
-}
-```
-
-### Arguments
-
-- These are the actual values passed to the function when it's called.
-- They fill in the parameters.
-
-```js
-console.log(add(5, 3));
-// 5 and 3 are arguments passed into the function
-```
-
-> Tip: Parameters = Expectation, Arguments = Reality 😄
-
----
-
-## ❓ What is AJAX in JavaScript?
-
-**AJAX** stands for **Asynchronous JavaScript and XML**.
-
-It’s a technique used to **send/receive data from a server** **without reloading** the entire page.
-
-### ✅ Why Use AJAX?
-
-- ✅ Improves user experience (no page reloads)
-- ✅ Enables **real-time updates**
-- ✅ Common in chat apps, search suggestions, infinite scroll, etc.
-
-- You can fetch data **asynchronously** using `XMLHttpRequest` or `fetch()` (modern).
-- AJAX works behind the scenes to update just part of a web page.
-
-### XMLHttpRequest Lifecycle (States)
-
-| `readyState` | Meaning                    |
-| ------------ | -------------------------- |
-| `0`          | Request not initialized    |
-| `1`          | Connection established     |
-| `2`          | Request received           |
-| `3`          | Processing request         |
-| `4`          | Request finished and ready |
-
-### Making an AJAX Request (Step by Step)
-
-```js
-// ✅ Step 1: Create an instance of XMLHttpRequest
-let xhr = new XMLHttpRequest();
-
-// ✅ Step 2: Open the request (type, URL, async=true)
-xhr.open("GET", "https://jsonplaceholder.typicode.com/posts", true);
-
-// ✅ Step 3: Define the callback function to handle the response
-xhr.onreadystatechange = function () {
-  // Check if request is done and response is OK
-  if (xhr.readyState === 4 && xhr.status === 200) {
-    let data = JSON.parse(xhr.responseText);
-    console.log(data); // ✅ Print API response data
-  }
-};
-
-// ✅ Step 4: Send the request
-xhr.send();
-```
-
-### ✅ Output:
-
-```js
-[
-  { userId: 1, id: 1, title: "...", body: "..." },
-  { userId: 1, id: 2, title: "...", body: "..." },
-  ...
-]
-```
-
-### 🆚 AJAX vs `fetch()` (Modern)
-
-| Feature       | XMLHttpRequest        | fetch()                     |
-| ------------- | --------------------- | --------------------------- |
-| Syntax        | Older & verbose       | Modern & cleaner            |
-| Return Type   | Callback-based        | Promise-based               |
-| JSON Handling | Manual `JSON.parse()` | Built-in with `.json()`     |
-| Usage         | Still supported       | Recommended for modern apps |
-
-### Bonus: Using `fetch()` for Same Request
-
-```js
-fetch("https://jsonplaceholder.typicode.com/posts")
-  .then((response) => response.json())
-  .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error));
-```
-
----
-
-## ❓ What is the Difference Between HTTP and HTTPS?
+### ❓ What is the Difference Between HTTP and HTTPS?
 
 `HTTP` and `HTTPS` are both **communication protocols** used to transfer data between a **web browser and a server**.
 
@@ -6151,3 +7652,118 @@ The **main difference** lies in **security**:
 | Prone to attacks    | Prevents MITM attacks |
 
 ---
+
+### ❓ What is the Difference Between HTTP/2 and HTTP/1.1?
+
+| Feature         | HTTP/1.1                   | HTTP/2                     |
+| --------------- | -------------------------- | -------------------------- |
+| Requests        | One request per connection | Multiple (multiplexed)     |
+| Header Size     | Large headers              | Compressed headers (HPACK) |
+| Push Support    | ❌ No                      | ✅ Yes (Server Push)       |
+| Speed           | Slower                     | Faster (parallel streams)  |
+| Binary Protocol | ❌ No                      | ✅ Yes                     |
+
+---
+
+### ❓ How Is Testing Done?
+
+Testing in JS is done using different strategies based on the layer of the app:
+
+- **Unit Testing:** Test small isolated units (functions/components).
+- **Integration Testing:** Test how different parts work together.
+- **End-to-End (E2E):** Simulate real user behavior in the full app.
+
+Also includes:
+
+- Snapshot testing (UI consistency)
+- Mocking (fake APIs, functions)
+
+---
+
+### ❓ What Frameworks Are Used for Testing?
+
+#### Popular JavaScript Testing Tools:
+
+- **Jest:** Unit + Integration + Mocking
+- **Mocha + Chai:** Flexible unit test framework
+- **Cypress:** E2E testing with real browser
+- **Playwright:** Modern E2E testing tool
+- **Vitest:** Fast unit testing for Vite projects
+
+---
+
+### ❓ What Is a Good vs Bad Test?
+
+#### ✅ Good Tests:
+
+- Clear, isolated, and predictable
+- Fast and reliable
+- Easy to understand and maintain
+- Have meaningful assertions
+
+#### ❌ Bad Tests:
+
+- Test too many things at once
+- Depend on external state
+- Are flaky or slow
+- Give false positives or negatives
+
+---
+
+### ❓ What Are the Types of Testing?
+
+#### Common Testing Types:
+
+- **Unit Testing:** Test individual components or functions
+- **Integration Testing:** Test combined behavior of modules
+- **E2E Testing:** Simulate full user flows
+- **Smoke Testing:** Quick checks for major features
+- **Regression Testing:** Ensure new changes don’t break old features
+
+---
+
+### ❓ What Is Unit Test?
+
+- Tests a single piece of functionality (e.g., a function or component)
+- Should not depend on other parts of the system
+
+```js
+// Example
+function add(a, b) {
+  return a + b;
+}
+test("adds numbers", () => {
+  expect(add(2, 3)).toBe(5);
+});
+```
+
+---
+
+### ❓ What Is Integration Test?
+
+- Tests how multiple modules or components work together
+- Validates shared behavior, APIs, database layers, etc
+
+```js
+// Example: React + API call test
+render(<UserList />);
+expect(await screen.findByText("John")).toBeInTheDocument();
+```
+
+---
+
+### ❓ What Is End-to-End Test?
+
+- Simulates user experience from the browser
+- Verifies full application behavior from UI to backend
+
+```js
+// Cypress example
+it("logs in successfully", () => {
+  cy.visit("/login");
+  cy.get("input[name=username]").type("user");
+  cy.get("input[name=password]").type("pass");
+  cy.get("button[type=submit]").click();
+  cy.url().should("include", "/dashboard");
+});
+```
