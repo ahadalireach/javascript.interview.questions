@@ -922,6 +922,68 @@ Closures can complicate debugging due to complex scope chains.
 
 ---
 
+## ❕ Bonus Question
+
+### ❓ Question: How can you optimize this expensive function?
+
+You're given the following code:
+
+```js
+const clumsySquare = (num1, num2) => {
+  for (let i = 1; i <= 100000000; i++) {} // simulate heavy processing
+  return num1 * num2;
+};
+```
+
+**Problem:**
+- The function takes a long time to run due to the artificial delay.
+- Calling it repeatedly with the **same arguments** will re-run the delay every time.
+
+#### How can you make it faster?
+**💡 Solution: Use Memoization**
+
+> Memoization caches the result for a given set of inputs,
+> so if you call the function again with the same arguments,
+> it returns the cached result instantly, skipping recomputation.
+
+**Memoized Version**
+```js
+function myMemoize(fn, context) {
+  const res = {}; // cache storage
+  return function (...args) {
+    const argsCache = JSON.stringify(args); // key from args
+    if (!res[argsCache]) {
+      console.log("Calculating...", args);
+      res[argsCache] = fn.apply(context || this, args);
+    }
+    return res[argsCache];
+  };
+}
+```
+```js
+// Apply Memoization to clumsySquare
+const clumsySquare = (num1, num2) => {
+  for (let i = 1; i <= 100000000; i++) {} // simulate heavy work
+  return num1 * num2;
+};
+
+const memoizedSquare = myMemoize(clumsySquare);
+console.time("First call");
+console.log(memoizedSquare(9467, 7649)); // Slow: runs the loop
+console.timeEnd("First call");
+
+console.time("Second call");
+console.log(memoizedSquare(9467, 7649)); // Fast: returns cached result
+console.timeEnd("Second call");
+
+```
+
+- 🐌 Without memoization: Every call does expensive work
+- ⚡ With memoization: Repeated calls are near-instant
+- 👏 A simple yet powerful optimization using closures + lexical scope
+
+---
+
 ## ❓ How Does Memory Management Work in JavaScript?
 
 JavaScript handles memory using two main components:
@@ -1279,6 +1341,7 @@ Functions in JavaScript are blocks of reusable code that perform a specific task
 - Anonymous Functions
 - First-Class Functions
 - Call-Back Functions
+- Pure Functions
 
 ---
 
@@ -1635,6 +1698,29 @@ doSomething(function (msg) {
 
 ---
 
+## ❓ What is a Pure Function?
+
+A **pure function**:
+
+- Depends only on its **input arguments**
+- Has **no side effects**
+- Always returns the **same output** for the same input
+
+```js
+ // (Pure):
+function add(a, b) {
+  return a + b;
+}
+
+// ❌ Not Pure:
+let total = 0;
+function addToTotal(a) {
+  total += a; // modifies external state (side effect)
+}
+```
+
+---
+
 ## ❓ What is IIFE (Immediately Invoked Function Expression)?
 
 An **IIFE (Immediately Invoked Function Expression)** is a JavaScript function that runs **immediately after it is defined**.
@@ -1847,6 +1933,28 @@ function fakeCurrying(a, b, c) {
 ```
 
 > Currying means returning functions for each parameter.
+
+### Infinite Currying
+- Keep returning functions until a call is made with **no argument**, at which point the final result is returned.
+
+```js
+function add(a) {
+  return function(b) {
+    if (b !== undefined) {
+      return add(a + b);
+    }
+    return a;
+  };
+}
+```
+```js
+add(2)(3)(4)(5)(); // Output: 14
+```
+
+#### One Liner Version
+```js
+const add = a => b => b !== undefined ? add(a + b) : a;
+```
 
 ---
 
@@ -2917,7 +3025,7 @@ console.log(obj.toString()); // from Object.prototype
 
 ---
 
-## ❓ What are Polyfills in JavaScript?
+## ❓ What are Polyfills and Transpilers in JavaScript?
 
 A **polyfill** is a piece of code that adds support for modern JavaScript features
 in **older browsers** that don’t support them yet.
@@ -3039,6 +3147,17 @@ Function.prototype.myBind = function (...args) {
 let displayMe = display.myBind(name);
 displayMe(); // Ahad Ali
 ```
+
+A **transpiler** converts modern JavaScript (ES6+) into older JavaScript (ES5)
+for compatibility with older browsers.
+
+Common tools:
+- Babel
+- TypeScript
+
+Used in most front-end frameworks like React, Vue, Angular, etc.
+
+---
 
 ## ❓ What are Classes in JavaScript?
 
@@ -3360,6 +3479,30 @@ Used to check inheritance relationships:
 rect1 instanceof Rectangle // true
 rect1 instanceof Shape     // true
 
+```
+
+---
+
+## ❓ What is the Difference Constructor Function and Factory Function?
+
+| Feature        | Constructor Function        | Factory Function               |
+|----------------|-----------------------------|--------------------------------|
+| Syntax         | Uses `new` keyword          | Regular function               |
+| `this` usage   | Uses `this` internally      | Returns object directly        |
+| Reusability    | Supports prototypes         | Uses closures or literals      |
+
+```js
+// Constructor Function
+function Person(name) {
+  this.name = name;
+}
+let p1 = new Person("Ahad");
+
+// Factory Function
+function createPerson(name) {
+  return { name };
+}
+let p2 = createPerson("Ahad");
 ```
 
 ---
@@ -3838,6 +3981,24 @@ console.log(1 + "1" + -"2"); // "11-2"
 
 console.log("A" - "B" + "2"); // "NaN2"
 console.log("A" - "B" + 2); // NaN
+```
+
+---
+
+## ❓ What is Referential Equality?
+
+Referential equality checks if **two variables refer to the same object in memory**.
+
+- Primitives (`string`, `number`, `boolean`, etc.) are compared **by value**.
+- Objects (`{}`, `[]`, `function`) are compared **by reference**.
+
+```js
+let a = { name: "Ahad" };
+let b = a;
+console.log(a === b); // ✅ true (same reference)
+
+let c = { name: "Ahad" };
+console.log(a === c); // ❌ false (different object, same content)
 ```
 
 ---
@@ -6703,6 +6864,26 @@ console.log(parsedUser.name); // "Ahad Ali"
 - Use **cookies** when server-side needs access to the data (auth/session).
 
 > 💡 Use a combination smartly depending on performance, access, and security requirements.
+
+---
+
+## ❓ What is the `SameSite` attribute in cookies?
+
+**SameSite** is a cookie flag that controls **when cookies are sent** with cross-site requests.
+
+It helps **prevent CSRF (Cross-Site Request Forgery)** attacks by limiting when cookies are included.
+
+### 🔐 Values:
+- **Strict**: Cookies are sent **only for same-site** requests.  
+  → Very secure, but can break UX (e.g., logging in from another domain).
+  
+- **Lax**: Cookies are sent for **same-site** and **some cross-site GET** requests.  
+  → Balanced between usability and security.
+  
+- **None**: Cookies are sent with **all cross-site** requests,  
+  but **must be Secure** (sent only over HTTPS).  
+  → Used when third-party cookies are needed.
+
 
 ---
 
